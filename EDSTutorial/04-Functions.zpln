@@ -1,0 +1,422 @@
+﻿{
+  "paragraphs": [
+    {
+      "text": "%md\nList of functions that has already been covered in the other notebooks:\n - SAS Sum Function\n - SAS Basic Math\n - SAS Trim/Compress\n - SAS Rename\n - SAS mean, min, max\n\nList of functions shown in this notebook:\n - SAS Upcase, Lowcase\n - SAS Combine text\n - SAS Substr\n - SAS Proc Transpose\n\n",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:40:01+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "colWidth": 12,
+        "editorHide": true,
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "<div class=\"markdown-body\">\n<p>List of functions that has already been covered in the other notebooks:</p>\n<ul>\n<li>SAS Sum Function</li>\n<li>SAS Basic Math</li>\n<li>SAS Trim/Compress</li>\n<li>SAS Rename</li>\n<li>SAS mean, min, max</li>\n</ul>\n<p>List of functions shown in this notebook:</p>\n<ul>\n<li>SAS Upcase, Lowcase</li>\n<li>SAS Combine text</li>\n<li>SAS Substr</li>\n<li>SAS Proc Transpose</li>\n</ul>\n\n</div>"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037128_1509878098",
+      "id": "20210301-112716_82767206",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:40:01+0000",
+      "dateFinished": "2021-03-01T11:40:01+0000",
+      "status": "FINISHED",
+      "focus": true,
+      "$$hashKey": "object:5695"
+    },
+    {
+      "title": "Load dataframe",
+      "text": "%pyspark\ndf = runquery(\"select * from testNikka\")",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:40:01+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_1591586511",
+      "id": "20210301-112717_265119256",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:40:01+0000",
+      "dateFinished": "2021-03-01T11:40:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:5696"
+    },
+    {
+      "title": "Trim, upper, start/end with",
+      "text": "%pyspark\nfrom pyspark.sql.functions import col, lower \n\nprint(\"*** Trim\")\ndf.select(df.card_brand).groupby(df.card_brand).count().show()\n\ndf1 = df.withColumn(\"card_brand\", trim(col(\"card_brand\"))) \\\n                .withColumn(\"reason_code_description\", trim(col(\"reason_code_description\")))\ndf1.select(df1.card_brand).groupby(df1.card_brand).count().show()\n\nprint(\"*** issuer_country_code contains E\")\ndf1.select(df1.lu_name, df1.issuer_country_code.alias('icc')).filter(df1.issuer_country_code.contains('E')).show(10)\n\nprint(\"*** issuer_country_code starts with E\")\ndf1.select(df1.issuer_country_code).filter(df1.issuer_country_code.startswith('E')).show(10)\n\nprint(\"*** issuer_country_code ends with E\")\ndf1.select(df1.issuer_country_code).filter(df1.issuer_country_code.endswith('E')).show(10)\n\nprint(\"*** lu_name lower\")\ndf1.select(lower(df1.lu_name), df1.issuer_country_code.alias('icc')).filter(df1.issuer_country_code.endswith('E')).show(10)\n\nprint(\"*** lu_name substring\")\ndf1.select(df1.lu_name, df1.lu_name.substr(1,3)).show(10)",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:40:07+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "*** Trim\nException in thread \"Thread-33\" io.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\nException in thread \"Thread-29\" io.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\nException in thread \"Thread-32\" Exception in thread \"Thread-35\" io.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\nException in thread \"Thread-30\" io.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\nException in thread \"Thread-31\" io.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\nio.grpc.StatusRuntimeException: UNAVAILABLE: Channel shutdown invoked\n\tat io.grpc.stub.ClientCalls.toStatusRuntimeException(ClientCalls.java:233)\n\tat io.grpc.stub.ClientCalls.getUnchecked(ClientCalls.java:214)\n\tat io.grpc.stub.ClientCalls.blockingUnaryCall(ClientCalls.java:139)\n\tat org.apache.zeppelin.interpreter.jupyter.proto.JupyterKernelGrpc$JupyterKernelBlockingStub.cancel(JupyterKernelGrpc.java:340)\n\tat org.apache.zeppelin.jupyter.JupyterKernelClient.cancel(JupyterKernelClient.java:292)\n\tat org.apache.zeppelin.jupyter.JupyterKernelInterpreter.cancel(JupyterKernelInterpreter.java:284)\n\tat org.apache.zeppelin.spark.IPySparkInterpreter.cancel(IPySparkInterpreter.java:143)\n\tat org.apache.zeppelin.python.PythonInterpreter.cancel(PythonInterpreter.java:415)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.cancel(LazyOpenInterpreter.java:119)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer.lambda$cancel$1(RemoteInterpreterServer.java:924)\n\tat java.lang.Thread.run(Thread.java:748)\n\u001b[0;31m---------------------------------------------------------------------------\u001b[0m\n\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)\n\u001b[0;32m<ipython-input-31-6bee5d513e3a>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"*** Trim\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 4\u001b[0;31m \u001b[0mdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mselect\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcard_brand\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgroupby\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcard_brand\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcount\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshow\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      5\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      6\u001b[0m \u001b[0mdf1\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mwithColumn\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"card_brand\"\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mtrim\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcol\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"card_brand\"\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;31m \u001b[0m\u001b[0;31m\\\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;32m/usr/lib/spark/python/lib/pyspark.zip/pyspark/sql/dataframe.py\u001b[0m in \u001b[0;36mshow\u001b[0;34m(self, n, truncate, vertical)\u001b[0m\n\u001b[1;32m    438\u001b[0m         \"\"\"\n\u001b[1;32m    439\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0misinstance\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtruncate\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mbool\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mand\u001b[0m \u001b[0mtruncate\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 440\u001b[0;31m             \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_jdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshowString\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;36m20\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mvertical\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    441\u001b[0m         \u001b[0;32melse\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    442\u001b[0m             \u001b[0mprint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_jdf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mshowString\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mn\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mint\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtruncate\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mvertical\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;32m/usr/lib/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\u001b[0m in \u001b[0;36m__call__\u001b[0;34m(self, *args)\u001b[0m\n\u001b[1;32m   1301\u001b[0m             \u001b[0mproto\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mEND_COMMAND_PART\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1302\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1303\u001b[0;31m         \u001b[0manswer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mgateway_client\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msend_command\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcommand\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1304\u001b[0m         return_value = get_return_value(\n\u001b[1;32m   1305\u001b[0m             answer, self.gateway_client, self.target_id, self.name)\n\n\u001b[0;32m/usr/lib/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\u001b[0m in \u001b[0;36msend_command\u001b[0;34m(self, command, retry, binary)\u001b[0m\n\u001b[1;32m   1031\u001b[0m         \u001b[0mconnection\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_get_connection\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1032\u001b[0m         \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1033\u001b[0;31m             \u001b[0mresponse\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mconnection\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msend_command\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mcommand\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1034\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0mbinary\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1035\u001b[0m                 \u001b[0;32mreturn\u001b[0m \u001b[0mresponse\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_create_connection_guard\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mconnection\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;32m/usr/lib/spark/python/lib/py4j-0.10.9-src.zip/py4j/java_gateway.py\u001b[0m in \u001b[0;36msend_command\u001b[0;34m(self, command)\u001b[0m\n\u001b[1;32m   1198\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1199\u001b[0m         \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m-> 1200\u001b[0;31m             \u001b[0manswer\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0msmart_decode\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mstream\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mreadline\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m-\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m   1201\u001b[0m             \u001b[0mlogger\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mdebug\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"Answer received: {0}\"\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mformat\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0manswer\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m   1202\u001b[0m             \u001b[0;32mif\u001b[0m \u001b[0manswer\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mstartswith\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mproto\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mRETURN_MESSAGE\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;32m/usr/local/lib/python3.7/socket.py\u001b[0m in \u001b[0;36mreadinto\u001b[0;34m(self, b)\u001b[0m\n\u001b[1;32m    587\u001b[0m         \u001b[0;32mwhile\u001b[0m \u001b[0;32mTrue\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    588\u001b[0m             \u001b[0;32mtry\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 589\u001b[0;31m                 \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_sock\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mrecv_into\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mb\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    590\u001b[0m             \u001b[0;32mexcept\u001b[0m \u001b[0mtimeout\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    591\u001b[0m                 \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_timeout_occurred\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;32mTrue\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\n\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {
+        "jobUrl": {
+          "propertyName": "jobUrl",
+          "label": "SPARK JOB",
+          "tooltip": "View in Spark web UI",
+          "group": "spark",
+          "values": [
+            {
+              "jobUrl": "http://ip-10-103-193-137.eu-west-1.compute.internal:4042/jobs/job?id=0",
+              "$$hashKey": "object:5871"
+            }
+          ],
+          "interpreterSettingId": "spark"
+        }
+      },
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_292773329",
+      "id": "20210301-112717_1297475801",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:40:07+0000",
+      "dateFinished": "2021-03-01T13:16:26+0000",
+      "status": "ABORT",
+      "$$hashKey": "object:5697"
+    },
+    {
+      "title": "Transpose / Pivot",
+      "text": "%pyspark\ndf_pivot = runquery(\"select * from testNikka\")\ndf_pivot = df.select('lu_name', 'card_brand').groupby('lu_name', 'card_brand').count()\ndf_pivot.show()\ndf_pivot.groupby(\"card_brand\").pivot(\"lu_name\").sum(\"count\").show()\n",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T13:16:26+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "org.apache.zeppelin.interpreter.InterpreterException: java.io.IOException: Interpreter Process creation is time out in 60 seconds\nYou can increase timeout threshold via setting zeppelin.interpreter.connect.timeout of this interpreter.\nSLF4J: Class path contains multiple SLF4J bindings.\nSLF4J: Found binding in [jar:file:/usr/lib/zeppelin-0.9.0-bin-all/interpreter/spark/spark-interpreter-0.9.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]\nSLF4J: Found binding in [jar:file:/usr/lib/hadoop-3.2.0/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]\nSLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.\nSLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]\n:: loading settings :: file = /usr/lib/spark/conf/ivysettings.xml\nIvy Default Cache set to: /home/zeppelin/.ivy2/cache\nThe jars for the packages stored in: /home/zeppelin/.ivy2/jars\n:: loading settings :: url = jar:file:/usr/lib/spark-3.0.0-bin-without-hadoop/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml\nio.delta#delta-core_2.12 added as a dependency\n:: resolving dependencies :: org.apache.spark#spark-submit-parent-d9affcba-fd1a-4030-88e4-fe677e6f31c3;1.0\n\tconfs: [default]\n\tfound io.delta#delta-core_2.12;0.7.0 in nexus-maven-central\n:: resolution report :: resolve 389ms :: artifacts dl 4ms\n\t---------------------------------------------------------------------\n\t|                  |            modules            ||   artifacts   |\n\t|       conf       | number| search|dwnlded|evicted|| number|dwnlded|\n\t---------------------------------------------------------------------\n\t|      default     |   1   |   0   |   0   |   0   ||   1   |   0   |\n\t---------------------------------------------------------------------\n:: retrieving :: org.apache.spark#spark-submit-parent-d9affcba-fd1a-4030-88e4-fe677e6f31c3\n\tconfs: [default]\n\t0 artifacts copied, 1 already retrieved (0kB/9ms)\n\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.open(RemoteInterpreter.java:129)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getFormType(RemoteInterpreter.java:271)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:444)\n\tat org.apache.zeppelin.notebook.Paragraph.jobRun(Paragraph.java:72)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:172)\n\tat org.apache.zeppelin.scheduler.AbstractScheduler.runJob(AbstractScheduler.java:132)\n\tat org.apache.zeppelin.scheduler.RemoteScheduler$JobRunner.run(RemoteScheduler.java:182)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)\n\tat java.lang.Thread.run(Thread.java:748)\nCaused by: java.io.IOException: Interpreter Process creation is time out in 60 seconds\nYou can increase timeout threshold via setting zeppelin.interpreter.connect.timeout of this interpreter.\nSLF4J: Class path contains multiple SLF4J bindings.\nSLF4J: Found binding in [jar:file:/usr/lib/zeppelin-0.9.0-bin-all/interpreter/spark/spark-interpreter-0.9.0.jar!/org/slf4j/impl/StaticLoggerBinder.class]\nSLF4J: Found binding in [jar:file:/usr/lib/hadoop-3.2.0/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]\nSLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.\nSLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]\n:: loading settings :: file = /usr/lib/spark/conf/ivysettings.xml\nIvy Default Cache set to: /home/zeppelin/.ivy2/cache\nThe jars for the packages stored in: /home/zeppelin/.ivy2/jars\n:: loading settings :: url = jar:file:/usr/lib/spark-3.0.0-bin-without-hadoop/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml\nio.delta#delta-core_2.12 added as a dependency\n:: resolving dependencies :: org.apache.spark#spark-submit-parent-d9affcba-fd1a-4030-88e4-fe677e6f31c3;1.0\n\tconfs: [default]\n\tfound io.delta#delta-core_2.12;0.7.0 in nexus-maven-central\n:: resolution report :: resolve 389ms :: artifacts dl 4ms\n\t---------------------------------------------------------------------\n\t|                  |            modules            ||   artifacts   |\n\t|       conf       | number| search|dwnlded|evicted|| number|dwnlded|\n\t---------------------------------------------------------------------\n\t|      default     |   1   |   0   |   0   |   0   ||   1   |   0   |\n\t---------------------------------------------------------------------\n:: retrieving :: org.apache.spark#spark-submit-parent-d9affcba-fd1a-4030-88e4-fe677e6f31c3\n\tconfs: [default]\n\t0 artifacts copied, 1 already retrieved (0kB/9ms)\n\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterManagedProcess.start(RemoteInterpreterManagedProcess.java:121)\n\tat org.apache.zeppelin.interpreter.ManagedInterpreterGroup.getOrCreateInterpreterProcess(ManagedInterpreterGroup.java:68)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.getOrCreateInterpreterProcess(RemoteInterpreter.java:104)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.internal_create(RemoteInterpreter.java:154)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreter.open(RemoteInterpreter.java:126)\n\t... 13 more\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_180633659",
+      "id": "20210301-112717_275772150",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T13:16:26+0000",
+      "dateFinished": "2021-03-01T13:17:26+0000",
+      "status": "ERROR",
+      "$$hashKey": "object:5698"
+    },
+    {
+      "title": "User Defined Functions",
+      "text": "%pyspark\nfrom pyspark.sql.functions import col \n\ndef getCountry(code):\n    thedict={\"US\":\"United States\",\"ITA\":\"Italy\",\"ES\":\"Spain\",\"FR\":\"France\",\"IE\":\"Ireland\",\"PRT\":\"Portugal\",\"DEFAULT\":\"Not Found\"}\n    if(thedict.get(code) !=None):\n        resStr = thedict.get(code)\n    else:\n        resStr = thedict.get(\"DEFAULT\")\n    return resStr\n\ndf_udf = df.withColumn(\"issuer_country_code\", trim(col(\"issuer_country_code\"))).groupby(\"issuer_country_code\").sum(\"TRANSACTION_AMOUNT\")\ndf_udf = df_udf.select(\"issuer_country_code\", col('sum(TRANSACTION_AMOUNT)').alias('sumTransaction'))\n",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:38:00+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "UsageError: Line magic function `%pyspark` not found.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_1775448883",
+      "id": "20210301-112717_1090913552",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:28:07+0000",
+      "dateFinished": "2021-03-01T11:28:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:5699"
+    },
+    {
+      "title": "Use UDF with dataframe",
+      "text": "%pyspark\nfrom pyspark.sql.functions import col, udf\n\nudfgetCountry = udf(getCountry)\ndf_udf.withColumn('country_desc',udfgetCountry(df_udf.issuer_country_code)).show()",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:38:16+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "UsageError: Line magic function `%pyspark` not found.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_2013041129",
+      "id": "20210301-112717_622810766",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:28:07+0000",
+      "dateFinished": "2021-03-01T11:28:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:5700"
+    },
+    {
+      "title": "Register and use UDF with spark sqlå",
+      "text": "%pyspark\nspark.udf.register(\"getCountry\", getCountry)\ndf_udf.createOrReplaceTempView(\"Test_Country\")\nspark.sql(\"select issuer_country_code, getCountry(issuer_country_code) as country_desc from Test_Country\").show()",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:38:28+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/python",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "UsageError: Line magic function `%pyspark` not found.\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037129_1747998118",
+      "id": "20210301-112717_1206809044",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:28:07+0000",
+      "dateFinished": "2021-03-01T11:28:07+0000",
+      "status": "FINISHED",
+      "$$hashKey": "object:5701"
+    },
+    {
+      "title": "Use UDF with spark sql",
+      "text": "%spark.sql\nselect issuer_country_code, getCountry(issuer_country_code) as country_desc, sumTransaction from Test_Country WHERE NOT issuer_country_code IS NULL and issuer_country_code <> \"\";",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:38:39+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false,
+          "completionSupport": true,
+          "completionKey": "TAB"
+        },
+        "editorMode": "ace/mode/sql",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "title": true,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u001b[0;36m  File \u001b[0;32m\"<ipython-input-10-b5b9f0f4efcf>\"\u001b[0;36m, line \u001b[0;32m2\u001b[0m\n\u001b[0;31m    select issuer_country_code, getCountry(issuer_country_code) as country_desc, sumTransaction from Test_Country WHERE NOT issuer_country_code IS NULL and issuer_country_code <> \"\";\u001b[0m\n\u001b[0m                             ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+          }
+        ]
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037130_653271945",
+      "id": "20210301-112717_687457181",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "dateStarted": "2021-03-01T11:28:08+0000",
+      "dateFinished": "2021-03-01T11:28:08+0000",
+      "status": "ERROR",
+      "$$hashKey": "object:5702"
+    },
+    {
+      "text": "\n",
+      "user": "b022237",
+      "dateUpdated": "2021-03-01T11:28:35+0000",
+      "progress": 0,
+      "config": {
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false,
+          "completionKey": "TAB",
+          "completionSupport": true
+        },
+        "editorMode": "ace/mode/scala",
+        "colWidth": 12,
+        "editorHide": false,
+        "fontSize": 9,
+        "results": {},
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "runtimeInfos": {},
+      "progressUpdateIntervalMs": 500,
+      "jobName": "paragraph_1614598037130_1842252007",
+      "id": "20210301-112717_1504083223",
+      "dateCreated": "2021-03-01T11:27:17+0000",
+      "status": "READY",
+      "$$hashKey": "object:5703"
+    }
+  ],
+  "name": "04-Functions",
+  "id": "2FXTVRG5E",
+  "defaultInterpreterGroup": "spark",
+  "version": "0.9.0",
+  "noteParams": {},
+  "noteForms": {},
+  "angularObjects": {},
+  "config": {
+    "isZeppelinNotebookCronEnable": false,
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {
+    "isRunning": false
+  },
+  "path": "/EDSTutorial/04-Functions"
+}
